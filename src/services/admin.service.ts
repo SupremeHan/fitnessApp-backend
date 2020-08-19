@@ -20,6 +20,17 @@ getById(id: number): Promise<Admin> {
     return this.admin.findOne(id);
 }
 
+async getByUsername(username: string): Promise<Admin| null> {
+    const admin = await this.admin.findOne({
+        username: username
+    });
+    if(admin) {
+        return admin;
+    }
+
+    return null;
+}
+
 add(data: AddAdminDto): Promise<Admin | ApiResponse> {
     const passwordHash = crypto.createHash('sha512');
     passwordHash.update(data.password);
