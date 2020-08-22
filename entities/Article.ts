@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Photo } from "./Photo";
 
 @Entity("article", { schema: "fitness" })
 export class Article {
@@ -8,9 +9,9 @@ export class Article {
   @Column("varchar", { name: "title", length: 50, default: () => "'0'" })
   title: string;
 
-  @Column("varchar", { name: "photo_path", length: 128 })
-  photoPath: string;
-
   @Column("mediumtext", { name: "description", nullable: true })
   description: string | null;
+
+  @OneToMany(() => Photo, (photo) => photo.article)
+  photo: Photo[];
 }

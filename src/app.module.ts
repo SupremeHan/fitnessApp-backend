@@ -11,6 +11,10 @@ import { UserController } from './controllers/user.controller';
 import { UserService } from './services/user.service';
 import { AuthController } from './controllers/auth.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { Photo } from 'entities/Photo';
+import { ArticleService } from './services/article.service';
+import { ArticleController } from './controllers/article.controller';
+import { PhotoService } from './services/photo.service';
 
 @Module({
   imports: [
@@ -24,23 +28,28 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
       entities: [
         Admin,
         User,
-        Article
+        Article,
+        Photo
       ]
     }),
     TypeOrmModule.forFeature([
       Admin,
       User,
-      Article
+      Article,
+      Photo
     ])
   ],
   controllers: [
                 AppController,
                 AdminController,
                 AuthController,
+                ArticleController,
                 UserController
               ],
   providers: [
               AdminService,
+              ArticleService,
+              PhotoService,
               UserService
             ],
 })
@@ -48,7 +57,7 @@ export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude('auth/*')
-      .forRoutes('api/*');
+    //  .exclude('auth/*')
+    //  .forRoutes('api/*');
   }
 }
