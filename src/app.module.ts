@@ -1,5 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { AppController } from './controllers/app.controller';
 import { AdminController } from './controllers/admin.controller';
 import { AdminService } from './services/admin.service';
 import { DatabaseConfig } from 'config/database.config';
@@ -15,6 +15,9 @@ import { Photo } from 'entities/Photo';
 import { ArticleService } from './services/article.service';
 import { ArticleController } from './controllers/article.controller';
 import { PhotoService } from './services/photo.service';
+import { Workout } from 'entities/Workout';
+import { WorkoutService } from './services/workout.service';
+import { WorkoutController } from './controllers/workout.controller';
 
 @Module({
   imports: [
@@ -25,38 +28,29 @@ import { PhotoService } from './services/photo.service';
       username: DatabaseConfig.username,
       password: DatabaseConfig.password,
       database: DatabaseConfig.database,
-      entities: [
-        Admin,
-        User,
-        Article,
-        Photo
-      ]
+      entities: [Admin, User, Article, Photo, Workout],
     }),
-    TypeOrmModule.forFeature([
-      Admin,
-      User,
-      Article,
-      Photo
-    ])
+    TypeOrmModule.forFeature([Admin, User, Article, Photo, Workout]),
   ],
   controllers: [
-                AppController,
-                AdminController,
-                AuthController,
-                ArticleController,
-                UserController
-              ],
+    AppController,
+    AdminController,
+    AuthController,
+    ArticleController,
+    UserController,
+    WorkoutController,
+  ],
   providers: [
-              AdminService,
-              ArticleService,
-              PhotoService,
-              UserService
-            ],
+    AdminService,
+    ArticleService,
+    PhotoService,
+    UserService,
+    WorkoutService,
+  ],
 })
-export class AppModule implements NestModule{
+export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
+    consumer.apply(AuthMiddleware);
     //  .exclude('auth/*')
     //  .forRoutes('api/*');
   }

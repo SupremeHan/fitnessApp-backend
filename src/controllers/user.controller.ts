@@ -1,32 +1,27 @@
-import { Controller, Get, Post, Body, Put } from "@nestjs/common";
-import { Crud } from "@nestjsx/crud";
-import { User } from "entities/User";
-import { UserService } from "src/services/user.service";
-import { AddUserDto } from "src/dtos/user/add.user.dto";
+import { Controller, Get, Post, Body, Put } from '@nestjs/common';
+import { Crud } from '@nestjsx/crud';
+import { User } from 'entities/User';
+import { UserService } from 'src/services/user.service';
+import { AddUserDto } from 'src/dtos/user/add.user.dto';
 
 @Controller('api/user')
 @Crud({
-    model: {
-        type: User 
+  model: {
+    type: User,
+  },
+  params: {
+    id: {
+      field: 'userId',
+      type: 'number',
+      primary: true,
     },
-    params: {
-        id: {
-            field: 'userId',
-            type: 'number',
-            primary: true 
-        }
-    }
+  },
 })
 export class UserController {
-    constructor(public service: UserService) {}
+  constructor(public service: UserService) {}
 
-    @Get()
-    getAll(): Promise<User[]> {
-        return this.service.getAll();
-    }
-
-    @Put('createUser')
-    createUser(@Body() data: AddUserDto) {
-        return this.service.createUser(data);
-    }
+  @Get()
+  getAll(): Promise<User[]> {
+    return this.service.getAll();
+  }
 }
