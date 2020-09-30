@@ -8,6 +8,8 @@ import {
   Get,
   Put,
   Body,
+  UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { Crud } from '@nestjsx/crud';
 import { Article } from 'entities/Article';
@@ -21,6 +23,9 @@ import { ApiResponse } from 'src/misc/api.response';
 import * as fs from 'fs';
 import * as fileType from 'file-type';
 import { AddArticleDto } from 'src/dtos/article/add.article.dto';
+import { RoleCheckerGurad } from 'src/misc/role.chacker.guard';
+import { AllowToRoles } from 'src/misc/allow.to.roles.descriptor';
+import { EditArticleDto } from 'src/dtos/article/edit.article.dto';
 
 @Controller('api/article')
 @Crud({
@@ -51,11 +56,24 @@ export class ArticleController {
     return this.service.add(data);
   }
 
-  @Post(':id/uploadPhoto')
+  @Patch(':id')
+  edit(
+    @Param('id') id: number,
+    @Body() data: EditArticleDto,
+  ): Promise<Article | ApiResponse> {
+    return this.service.editArticle(id, data);
+  }
+
+  @Get('/photo')
+  getPhotos(): Promise<Photo[]> {
+    return this.photoService.getAll();
+  }
+
+  @Post(':id/uploadPhoto/')
   @UseInterceptors(
     FileInterceptor('photo', {
       storage: diskStorage({
-        destiantion: StorageConfig.photos,
+        destination: StorageConfig.photo.destination,
         filename: (req, file, callback) => {
           let original = file.originalname;
 
@@ -97,7 +115,7 @@ export class ArticleController {
       },
       limits: {
         files: 1,
-        fileSize: StorageConfig.photos.maxSize,
+        fileSize: StorageConfig.photo.maxSize,
       },
     }),
   )

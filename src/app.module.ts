@@ -51,7 +51,7 @@ import { WorkoutController } from './controllers/workout.controller';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware);
-    //  .exclude('auth/*')
-    //  .forRoutes('api/*');
+    // .exclude('auth/*')
+    // .forRoutes('api/*');
   }
 }

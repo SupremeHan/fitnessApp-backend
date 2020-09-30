@@ -1,8 +1,10 @@
-import { Controller, Get, Put, Body } from '@nestjs/common';
+import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common';
 import { Crud } from '@nestjsx/crud';
 import { Workout } from 'entities/Workout';
 import { WorkoutService } from 'src/services/workout.service';
 import { AddWorkoutDto } from 'src/dtos/workout/add.workout.dto';
+import { RoleCheckerGurad } from 'src/misc/role.chacker.guard';
+import { AllowToRoles } from 'src/misc/allow.to.roles.descriptor';
 
 @Controller('api/workout')
 @Crud({
@@ -26,6 +28,8 @@ export class WorkoutController {
   }
 
   @Put('addWorkout')
+  @UseGuards(RoleCheckerGurad)
+  @AllowToRoles('admin')
   addWorkout(@Body() data: AddWorkoutDto) {
     return this.service.addWorkout(data);
   }

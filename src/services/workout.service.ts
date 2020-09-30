@@ -27,6 +27,7 @@ export class WorkoutService extends TypeOrmCrudService<Workout> {
     let newWorkout: Workout = new Workout();
     newWorkout.name = data.name;
     newWorkout.duration = data.duration;
+    newWorkout.wod = data.wod;
     newWorkout.videoLink = data.videoLink;
 
     return new Promise(resolve => {
