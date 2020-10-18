@@ -18,6 +18,9 @@ import { PhotoService } from './services/photo.service';
 import { Workout } from 'entities/Workout';
 import { WorkoutService } from './services/workout.service';
 import { WorkoutController } from './controllers/workout.controller';
+import { Stats } from 'entities/Stats';
+import { StatsController } from './controllers/stats.controller';
+import { StatsService } from './services/stats.service';
 
 @Module({
   imports: [
@@ -28,9 +31,9 @@ import { WorkoutController } from './controllers/workout.controller';
       username: DatabaseConfig.username,
       password: DatabaseConfig.password,
       database: DatabaseConfig.database,
-      entities: [Admin, User, Article, Photo, Workout],
+      entities: [Admin, User, Article, Photo, Workout, Stats],
     }),
-    TypeOrmModule.forFeature([Admin, User, Article, Photo, Workout]),
+    TypeOrmModule.forFeature([Admin, User, Article, Photo, Workout, Stats]),
   ],
   controllers: [
     AppController,
@@ -39,6 +42,7 @@ import { WorkoutController } from './controllers/workout.controller';
     ArticleController,
     UserController,
     WorkoutController,
+    StatsController
   ],
   providers: [
     AdminService,
@@ -46,12 +50,13 @@ import { WorkoutController } from './controllers/workout.controller';
     PhotoService,
     UserService,
     WorkoutService,
+    StatsService
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware);
-    // .exclude('auth/*')
-    // .forRoutes('api/*');
+    consumer.apply(AuthMiddleware)
+      .exclude('auth/*')
+    //.forRoutes('api/*');
   }
 }

@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Stats } from './Stats';
 
 @Entity('user', { schema: 'fitness' })
 export class User {
@@ -29,4 +31,10 @@ export class User {
     default: () => "'0'",
   })
   passwordHash: string;
+
+  @OneToOne(
+    () => Stats,
+    stats => stats.user
+  )
+  stats: Stats[];
 }

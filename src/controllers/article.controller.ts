@@ -44,14 +44,14 @@ export class ArticleController {
   constructor(
     public service: ArticleService,
     public photoService: PhotoService,
-  ) {}
+  ) { }
 
   @Get()
   getAllArticles(): Promise<Article[]> {
     return this.service.getAll();
   }
 
-  @Put()
+  @Post()
   add(@Body() data: AddArticleDto): Promise<Article | ApiResponse> {
     return this.service.add(data);
   }
