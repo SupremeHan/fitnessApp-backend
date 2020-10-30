@@ -9,7 +9,7 @@ export class Article {
   @Column('varchar', { name: 'title', length: 50, default: () => "'0'" })
   title: string;
 
-  @Column('mediumtext', { name: 'description', nullable: true })
+  @Column('longtext', { name: 'description', nullable: true })
   description: string | null;
 
   @Column('varchar', { name: 'image_url', length: 128, default: () => "'0'" })

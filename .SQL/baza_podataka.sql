@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   UNIQUE KEY `uq_admin_username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table fitness.admin: ~1 rows (approximately)
+-- Dumping data for table fitness.admin: ~0 rows (approximately)
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
 INSERT INTO `admin` (`admin_id`, `username`, `password_hash`) VALUES
 	(1, 'admin', 'C7AD44CBAD762A5DA0A452F9E854FDC1E0E7A52A38015F23F3EAB1D80B931DD472634DFAC71CD34EBC35D16AB7FB8A90C81F975113D6C7538DC69DD8DE9077EC');
@@ -38,14 +38,16 @@ CREATE TABLE IF NOT EXISTS `article` (
   `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `image_url` varchar(128) NOT NULL DEFAULT '0',
   PRIMARY KEY (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table fitness.article: ~3 rows (approximately)
+-- Dumping data for table fitness.article: ~4 rows (approximately)
 /*!40000 ALTER TABLE `article` DISABLE KEYS */;
 INSERT INTO `article` (`article_id`, `title`, `description`, `image_url`) VALUES
 	(1, 'Wod 2002132', '21-15-9 Burpee over bar, bar mucle-ups', '0'),
 	(2, 'What food shoud you eat', 'You should eat as much healty food as you can, and some pizza beside.', '0'),
-	(3, 'Novi naslov', 'Jako zanimljiva deskripcija', '0');
+	(3, 'Novi naslov', 'Jako zanimljiva deskripcija', '0'),
+	(19, 'neki titl', 'desdjsadjasdjsajdsaj', '0'),
+	(40, 'Novi naslov', 'Jako zanimljiva deskripcija', '0');
 /*!40000 ALTER TABLE `article` ENABLE KEYS */;
 
 -- Dumping structure for table fitness.photo
@@ -58,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
   CONSTRAINT `fk_photo_article_id` FOREIGN KEY (`article_id`) REFERENCES `article` (`article_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table fitness.photo: ~4 rows (approximately)
+-- Dumping data for table fitness.photo: ~3 rows (approximately)
 /*!40000 ALTER TABLE `photo` DISABLE KEYS */;
 INSERT INTO `photo` (`photo_id`, `image_path`, `article_id`) VALUES
 	(7, '2020916-3770233938-john_wick_poster.jpg', 1),
@@ -66,6 +68,30 @@ INSERT INTO `photo` (`photo_id`, `image_path`, `article_id`) VALUES
 	(9, '2020916-4748744878-rio-french-poster.jpg', 1),
 	(10, '2020916-9414763561-rio-french-poster.jpg', 1);
 /*!40000 ALTER TABLE `photo` ENABLE KEYS */;
+
+-- Dumping structure for table fitness.stats
+CREATE TABLE IF NOT EXISTS `stats` (
+  `stats_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `bench_press` int NOT NULL DEFAULT '0',
+  `back_squat` int NOT NULL DEFAULT '0',
+  `front_squat` int NOT NULL DEFAULT '0',
+  `overhead_squat` int NOT NULL DEFAULT '0',
+  `deadlift` int NOT NULL DEFAULT '0',
+  `push_press` int NOT NULL DEFAULT '0',
+  `strict_press` int NOT NULL DEFAULT '0',
+  `clean_and_jerk` int NOT NULL DEFAULT '0',
+  `snatch` int NOT NULL DEFAULT '0',
+  `user_id` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`stats_id`),
+  KEY `fk_user_user_id` (`user_id`),
+  CONSTRAINT `fk_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table fitness.stats: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stats` DISABLE KEYS */;
+INSERT INTO `stats` (`stats_id`, `bench_press`, `back_squat`, `front_squat`, `overhead_squat`, `deadlift`, `push_press`, `strict_press`, `clean_and_jerk`, `snatch`, `user_id`) VALUES
+	(1, 100, 150, 130, 80, 200, 80, 60, 110, 90, 1);
+/*!40000 ALTER TABLE `stats` ENABLE KEYS */;
 
 -- Dumping structure for table fitness.user
 CREATE TABLE IF NOT EXISTS `user` (
@@ -78,13 +104,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(50) NOT NULL DEFAULT '0',
   `password_hash` varchar(128) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table fitness.user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`user_id`, `name`, `lastname`, `age`, `height`, `weight`, `email`, `password_hash`) VALUES
 	(1, 'User', 'LastUser', 21, 180, 80, 'user@user.com', 'B14361404C078FFD549C03DB443C3FEDE2F3E534D73F78F77301ED97D4A436A9FD9DB05EE8B325C0AD36438B43FEC8510C204FC1C1EDB21D0941C00E9E2C1CE2'),
-	(2, 'Test', '0', 23, 177, 90, 'test2@gmail.com', 'EE26B0DD4AF7E749AA1A8EE3C10AE9923F618980772E473F8819A5D4940E0DB27AC185F8A0E1D5F84F88BC887FD67B143732C304CC5FA9AD8E6F57F50028A8FF');
+	(2, 'Test', '0', 23, 177, 90, 'test2@gmail.com', 'EE26B0DD4AF7E749AA1A8EE3C10AE9923F618980772E473F8819A5D4940E0DB27AC185F8A0E1D5F84F88BC887FD67B143732C304CC5FA9AD8E6F57F50028A8FF'),
+	(3, 'Mathew', 'Fraser', 28, 170, 80, 'matf@user.com', 'B14361404C078FFD549C03DB443C3FEDE2F3E534D73F78F77301ED97D4A436A9FD9DB05EE8B325C0AD36438B43FEC8510C204FC1C1EDB21D0941C00E9E2C1CE2');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Dumping structure for table fitness.workout

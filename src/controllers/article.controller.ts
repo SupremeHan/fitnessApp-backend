@@ -11,7 +11,6 @@ import {
   UseGuards,
   Patch,
 } from '@nestjs/common';
-import { Crud } from '@nestjsx/crud';
 import { Article } from 'entities/Article';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -23,23 +22,9 @@ import { ApiResponse } from 'src/misc/api.response';
 import * as fs from 'fs';
 import * as fileType from 'file-type';
 import { AddArticleDto } from 'src/dtos/article/add.article.dto';
-import { RoleCheckerGurad } from 'src/misc/role.chacker.guard';
-import { AllowToRoles } from 'src/misc/allow.to.roles.descriptor';
 import { EditArticleDto } from 'src/dtos/article/edit.article.dto';
 
 @Controller('api/article')
-@Crud({
-  model: {
-    type: Article,
-  },
-  params: {
-    id: {
-      field: 'articleId',
-      type: 'number',
-      primary: true,
-    },
-  },
-})
 export class ArticleController {
   constructor(
     public service: ArticleService,
@@ -49,6 +34,17 @@ export class ArticleController {
   @Get()
   getAllArticles(): Promise<Article[]> {
     return this.service.getAll();
+  }
+
+  @Get(':id')
+  getById(@Param('id') articleId: number): Promise<Article| ApiResponse> {
+    return new Promise(async resolve => {
+      let article = await this.service.getById(articleId);
+      if(article == undefined) {
+        resolve(new ApiResponse('error', -7002));
+      }
+      resolve(article);
+    })
   }
 
   @Post()

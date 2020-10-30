@@ -20,6 +20,10 @@ export class ArticleService extends TypeOrmCrudService<Article> {
     super(article);
   }
 
+  getById(id: number): Promise<Article | ApiResponse> {
+    return this.article.findOne(id);
+  }
+
   async getAll(): Promise<Article[]> {
     let x = await this.article.find();
 
